@@ -1,5 +1,7 @@
 import type { CompanyData } from '../types/company-data.types';
 import rawData from '../data.json';
+import { calculateGrowthPercentage, getGrowthColorClass } from '../helpers/priceUtils';
+
 
 interface Props {
   selectedCompanyId: string | null;
@@ -18,12 +20,17 @@ export default function CompanyDetailPanel({ selectedCompanyId }: Props) {
   }
 
   const latest = company.eod.at(-1);
+  const growth = calculateGrowthPercentage(company.eod);
+  const growthClass = getGrowthColorClass(growth);
 
   return (
     <div className="p-4 border border-zinc-700 rounded-xl h-[80vh] overflow-y-auto bg-zinc-900">
       <div className="mb-6">
         <h2 className="text-2xl text-white font-bold">{company.name_display}</h2>
         <p className="text-zinc-400 text-sm">{company.ticker}</p>
+        <span className={`${growthClass} text-sm`}>
+          {growth !== null ? `${growth.toFixed(2)}%` : 'N/A'}
+        </span>
         {latest && (
           <div className="mt-4 space-y-2 text-sm text-zinc-300">
             <p>

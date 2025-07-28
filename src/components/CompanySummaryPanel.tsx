@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import rawData from '../data.json';
 import type { CompanyData } from '../types/company-data.types';
+import { calculateGrowthPercentage, getGrowthColorClass } from '../helpers/priceUtils';
 
 interface Props {
   onSelectCompany: (id: string) => void;
 }
+
 
 export default function CompanySummaryPanel({ onSelectCompany }: Props) {
   const [companies, setCompanies] = useState<CompanyData[]>([]);
@@ -34,6 +36,8 @@ export default function CompanySummaryPanel({ onSelectCompany }: Props) {
       />
 
       {filteredCompanies.map((company) => {
+        const growth = calculateGrowthPercentage(company.eod);
+        const growthClass = getGrowthColorClass(growth);
         const latest = company.eod.at(-1);
         return (
           <div
@@ -53,6 +57,9 @@ export default function CompanySummaryPanel({ onSelectCompany }: Props) {
                 </div>
               )}
             </div>
+            <span className={`${growthClass} text-sm`}>
+              {growth !== null ? `${growth.toFixed(2)}%` : 'N/A'}
+            </span>
           </div>
         );
       })}
