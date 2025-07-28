@@ -11,6 +11,13 @@ type Props = {
   selectedInsiderId: string | null;
 };
 
+function sortInsidersByValue(insiders: InsiderData[]): InsiderData[] {
+  return [...insiders].sort(
+    (a, b) => Math.abs(b.net_securities_value) - Math.abs(a.net_securities_value)
+  );
+}
+
+
 export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Props) {
   const [insiders, setInsiders] = useState<InsiderData[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -19,7 +26,8 @@ export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Pro
 
   useEffect(() => {
     const { insiders } = parseInsiderCompanyData(rawData);
-    setInsiders(insiders);
+    const sorted = sortInsidersByValue(insiders);
+    setInsiders(sorted);
   }, []);
 
   const filteredInsiders = useFilteredInsiders(insiders, searchQuery);
