@@ -19,7 +19,7 @@ export default function CompanyDetailPanel({ selectedCompanyId }: Props) {
   if (!selectedCompanyId || !company || !company.eod || company.eod.length === 0) {
     return (
       <div className="text-zinc-400 text-center pt-12">
-        Selecciona una compañía para ver los detalles
+        Select a company to view details
       </div>
     );
   }
@@ -57,34 +57,33 @@ export default function CompanyDetailPanel({ selectedCompanyId }: Props) {
 
       </div>
 
-      {/* Sección: Resumen General */}
       <div className="space-y-2 text-sm text-zinc-300 mb-6">
         {latest && (
           <>
-            <p><strong>Último cierre:</strong> ${latest.close.toFixed(2)}</p>
-            <p><strong>Volumen último día:</strong> <span className={volumeClass}>{latest.volume.toLocaleString()}</span></p>
-            <p><strong>Media de volumen:</strong> {averageVolume.toLocaleString()}</p>
-            <p><strong>Fecha:</strong> {latest.date}</p>
+            <p><strong>Last close:</strong> ${latest.close.toFixed(2)}</p>
+            <p><strong>Last day volume:</strong> <span className={volumeClass}>{latest.volume.toLocaleString()}</span></p>
+            <p><strong>Average volume:</strong> {averageVolume.toLocaleString()}</p>
+            <p><strong>Date:</strong> {latest.date}</p>
           </>
         )}
-        <p><strong>Growth total:</strong> <span className={growthClass}>{growth?.toFixed(2)}%</span></p>
-        <p><strong>Volatilidad total:</strong> <span className={volatilityClass}>{volatility.toFixed(2)}</span></p>
+        <p><strong>Total growth:</strong> <span className={growthClass}>{growth?.toFixed(2)}%</span></p>
+        <p><strong>Total volatility:</strong> <span className={volatilityClass}>{volatility.toFixed(2)}</span></p>
         {trend5d !== null && (
-          <p><strong>Tendencia 5D:</strong> <span className={trendClass}>{trend5d.toFixed(2)}%</span></p>
+          <p><strong>5D trend:</strong> <span className={trendClass}>{trend5d.toFixed(2)}%</span></p>
         )}
       </div>
 
       {/* Sección: Estadísticas de comportamiento */}
       <div className="border-t border-zinc-700 pt-4 mb-6">
-        <h3 className="text-lg font-semibold text-white mb-2">Comportamiento</h3>
+        <h3 className="text-lg font-semibold text-white mb-2">Behavior Statistics</h3>
         <div className="text-sm text-zinc-300 space-y-1">
-          <p><strong>Días alcistas:</strong> {bullishDays}</p>
-          <p><strong>Días bajistas:</strong> {bearishDays}</p>
+          <p><strong>Up days:</strong> {bullishDays}</p>
+          <p><strong>Down days:</strong> {bearishDays}</p>
           {highestClose && (
-            <p><strong>Cierre más alto:</strong> ${highestClose.close.toFixed(2)} ({highestClose.date})</p>
+            <p><strong>Highest close:</strong> ${highestClose.close.toFixed(2)} ({highestClose.date})</p>
           )}
           {lowestClose && (
-            <p><strong>Cierre más bajo:</strong> ${lowestClose.close.toFixed(2)} ({lowestClose.date})</p>
+            <p><strong>Lowest close:</strong> ${lowestClose.close.toFixed(2)} ({lowestClose.date})</p>
           )}
         </div>
       </div>

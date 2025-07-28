@@ -23,7 +23,7 @@ export default function InsiderActivityPanel({ selectedInsiderId }: Props) {
   if (!insiders) {
     return (
       <div className="text-white p-6 text-center">
-        Cargando transacciones de insiders...
+        Loading insider data...
       </div>
     );
   }
@@ -31,7 +31,7 @@ export default function InsiderActivityPanel({ selectedInsiderId }: Props) {
   if (!selectedInsiderId) {
     return (
       <div className="text-zinc-400 p-6 text-center">
-        Selecciona un insider para ver sus transacciones.
+        Select an insider to view their transactions.
       </div>
     );
   }
@@ -41,7 +41,7 @@ export default function InsiderActivityPanel({ selectedInsiderId }: Props) {
   if (!selected || selected.transactions.length === 0) {
     return (
       <div className="text-zinc-400 p-6 text-center">
-        No hay transacciones disponibles para este insider.
+        No transactions available for this insider.
       </div>
     );
   }

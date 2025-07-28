@@ -22,7 +22,7 @@ export default function TabSelector({ activeTab, onTabChange }: TabSelectorProps
           activeTab === 'companies' ? 'border-b-2 border-white text-white' : 'text-zinc-400 hover:text-white'
         }`}
       >
-        Compañías
+        Companies
       </button>
     </div>
   );

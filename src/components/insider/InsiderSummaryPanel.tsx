@@ -37,7 +37,7 @@ export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Pro
     <div className="space-y-6">
       <input
         type="text"
-        placeholder="Buscar por insider o empresa..."
+        placeholder="Search insiders..."
         value={searchQuery}
         onChange={(e) => {
           setSearchQuery(e.target.value);
@@ -84,25 +84,25 @@ export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Pro
 
             <div className="grid grid-cols-2 gap-4 mt-4 text-sm">
               <div>
-                <p className="text-zinc-400">Acciones compradas</p>
+                <p className="text-zinc-400">Shares Purchased</p>
                 <p className="text-green-400 font-semibold">
                   {total_securities_purchased.toLocaleString()} (${total_securities_purchased_value.toLocaleString(undefined, { maximumFractionDigits: 0 })})
                 </p>
               </div>
               <div>
-                <p className="text-zinc-400">Acciones vendidas</p>
+                <p className="text-zinc-400">Shares Sold</p>
                 <p className="text-red-400 font-semibold">
                   {total_securities_sold.toLocaleString()} (${total_securities_sold_value.toLocaleString(undefined, { maximumFractionDigits: 0 })})
                 </p>
               </div>
               <div>
-                <p className="text-zinc-400">Balance neto</p>
+                <p className="text-zinc-400">Net Balance</p>
                 <p className={isBuyer ? 'text-green-400 font-semibold' : isSeller ? 'text-red-400 font-semibold' : 'text-white'}>
                   {net_securities.toLocaleString()} (${net_securities_value.toLocaleString(undefined, { maximumFractionDigits: 0 })})
                 </p>
               </div>
               <div>
-                <p className="text-zinc-400">Acciones totales actuales</p>
+                <p className="text-zinc-400">Total Shares Owned</p>
                 <p className="text-white font-semibold">
                   {holdings.total_shares.toLocaleString()}
                 </p>
@@ -116,7 +116,7 @@ export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Pro
                 rel="noopener noreferrer"
                 className="text-xs text-zinc-400 hover:text-zinc-200 underline"
               >
-                Ver detalles en SEC →
+                View on SEC →
               </a>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Pro
             onClick={() => setExpanded(!expanded)}
             className="text-sm px-4 py-2 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-600"
           >
-            {expanded ? 'Ver menos' : `Ver ${filteredInsiders.length - VISIBLE_COUNT} más`}
+            {expanded ? 'View Less' : `View ${filteredInsiders.length - VISIBLE_COUNT} More`}
           </button>
         </div>
       )}

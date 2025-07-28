@@ -80,7 +80,7 @@ export default function CompanySummaryPanel({ onSelectCompany }: Props) {
     <div className="space-y-4">
       <input
         type="text"
-        placeholder="Buscar compañía..."
+        placeholder="Search companies..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         className="w-full px-3 py-2 rounded bg-zinc-800 text-white placeholder-zinc-400 border border-zinc-700"
@@ -97,13 +97,13 @@ export default function CompanySummaryPanel({ onSelectCompany }: Props) {
           onClick={() => handleSortChange('volume')}
           className={`px-2 py-1 rounded border ${sortKey === 'volume' ? 'bg-zinc-700 text-white' : 'bg-zinc-800 text-zinc-300'}`}
         >
-          Volumen
+          Volume
         </button>
         <button
           onClick={() => handleSortChange('volatility')}
           className={`px-2 py-1 rounded border ${sortKey === 'volatility' ? 'bg-zinc-700 text-white' : 'bg-zinc-800 text-zinc-300'}`}
         >
-          Volatilidad
+          Volatility
         </button>
         <button
           onClick={() => handleSortChange('trend5d')}
@@ -123,9 +123,9 @@ export default function CompanySummaryPanel({ onSelectCompany }: Props) {
         const highlight = sortKey === 'growth'
           ? <span className={`${growthClass} text-sm`}>Growth: {growth !== null ? `${growth.toFixed(2)}%` : 'N/A'}</span>
           : sortKey === 'volume'
-            ? <span className={`${getVolumeColorClass(latest?.volume)} text-sm`}>Volumen: {latest?.volume.toLocaleString() || 'N/A'}</span>
+            ? <span className={`${getVolumeColorClass(latest?.volume)} text-sm`}>Volume: {latest?.volume.toLocaleString() || 'N/A'}</span>
             : sortKey === 'volatility'
-              ? <span className={`${getVolatilityColorClass(getVolatility(company.eod))} text-sm`}>Volatilidad: {getVolatility(company.eod).toFixed(2)}</span>
+              ? <span className={`${getVolatilityColorClass(getVolatility(company.eod))} text-sm`}>Volatility: {getVolatility(company.eod).toFixed(2)}</span>
               : <span className={`${trendClass} text-sm`}>5D Trend: {trend5d.toFixed(2)}%</span>;
 
         return (
@@ -147,8 +147,8 @@ export default function CompanySummaryPanel({ onSelectCompany }: Props) {
                 <p className="text-sm text-zinc-400">{company.ticker}</p>
               </div>
               <div className="text-right text-sm text-zinc-300">
-                <p>Cierre: ${latest?.close.toFixed(2)}</p>
-                <p>Volumen: {latest?.volume.toLocaleString()}</p>
+                <p>Close: ${latest?.close.toFixed(2)}</p>
+                <p>Volume: {latest?.volume.toLocaleString()}</p>
               </div>
             </div>
             <div className="pt-2">{highlight}</div>

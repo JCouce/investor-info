@@ -35,7 +35,7 @@ export default function InsiderCard({
 
       <div className="grid grid-cols-2 gap-2 text-sm">
         <div>
-          <p className="text-zinc-400">Acción</p>
+          <p className="text-zinc-400">Action</p>
           <p
             className={
               isBuy
@@ -49,19 +49,19 @@ export default function InsiderCard({
           </p>
         </div>
         <div>
-          <p className="text-zinc-400">Cantidad</p>
+          <p className="text-zinc-400">Quantity</p>
           <p className="text-white font-semibold">
             {transaction.quantity?.toLocaleString()}
           </p>
         </div>
         <div>
-          <p className="text-zinc-400">Precio medio</p>
+          <p className="text-zinc-400">Average Price</p>
           <p className="text-white font-semibold">
             ${transaction.price?.toFixed(2)}
           </p>
         </div>
         <div>
-          <p className="text-zinc-400">Valor total</p>
+          <p className="text-zinc-400">Total Value</p>
           <p className="text-white font-semibold">
             ${transaction.value?.toLocaleString(undefined, {
               maximumFractionDigits: 0,
@@ -69,13 +69,13 @@ export default function InsiderCard({
           </p>
         </div>
         <div>
-          <p className="text-zinc-400">Acciones tras operación</p>
+          <p className="text-zinc-400">Shares Owned After Transaction</p>
           <p className="text-white font-semibold">
             {transaction.ownedFollowingTransaction.toLocaleString()}
           </p>
         </div>
         <div>
-          <p className="text-zinc-400">Acciones totales (directas + indirectas)</p>
+          <p className="text-zinc-400">Total Shares (Direct + Indirect)</p>
           <p className="text-white font-semibold">
             {holding.total_shares.toLocaleString()}
           </p>
@@ -89,7 +89,7 @@ export default function InsiderCard({
           rel="noopener noreferrer"
           className="text-xs text-zinc-400 hover:text-zinc-200 underline"
         >
-          Ver en SEC →
+          View on SEC →
         </a>
       </div>
     </div>
