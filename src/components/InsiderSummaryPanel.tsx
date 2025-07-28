@@ -1,0 +1,107 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import type { InsiderData } from '../types/insider-data.types';
+import { parseInsiderCompanyData } from '../helpers/parseData';
+import rawData from '../data.json';
+
+export default function InsiderSummaryPanel() {
+  const [insiders, setInsiders] = useState<InsiderData[]>([]);
+  const [expanded, setExpanded] = useState(false);
+  const VISIBLE_COUNT = 5;
+
+  useEffect(() => {
+    const { insiders } = parseInsiderCompanyData(rawData);
+    setInsiders(insiders);
+  }, []);
+
+  const visibleInsiders = expanded ? insiders : insiders.slice(0, VISIBLE_COUNT);
+
+  return (
+    <div className="space-y-6">
+      {visibleInsiders.map((insider) => {
+        const {
+          insider: insiderInfo,
+          company,
+          total_securities_purchased,
+          total_securities_purchased_value,
+          total_securities_sold,
+          total_securities_sold_value,
+          net_securities,
+          net_securities_value,
+          holdings,
+        } = insider;
+
+        const isBuyer = net_securities > 0;
+        const isSeller = net_securities < 0;
+
+        return (
+          <div
+            key={insiderInfo.id}
+            className="bg-zinc-900 border border-zinc-700 rounded-2xl p-4 shadow"
+          >
+            <div className="flex justify-between items-start">
+              <div>
+                <h2 className="text-lg font-semibold text-white">{insiderInfo.name}</h2>
+                <p className="text-sm text-zinc-400 capitalize">{insiderInfo.relationship}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-white font-medium">{company.name_display}</p>
+                <p className="text-xs text-zinc-500">{company.ticker}</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mt-4 text-sm">
+              <div>
+                <p className="text-zinc-400">Acciones compradas</p>
+                <p className="text-green-400 font-semibold">
+                  {total_securities_purchased.toLocaleString()} (${total_securities_purchased_value.toLocaleString(undefined, { maximumFractionDigits: 0 })})
+                </p>
+              </div>
+              <div>
+                <p className="text-zinc-400">Acciones vendidas</p>
+                <p className="text-red-400 font-semibold">
+                  {total_securities_sold.toLocaleString()} (${total_securities_sold_value.toLocaleString(undefined, { maximumFractionDigits: 0 })})
+                </p>
+              </div>
+              <div>
+                <p className="text-zinc-400">Balance neto</p>
+                <p className={isBuyer ? 'text-green-400 font-semibold' : isSeller ? 'text-red-400 font-semibold' : 'text-white'}>
+                  {net_securities.toLocaleString()} (${net_securities_value.toLocaleString(undefined, { maximumFractionDigits: 0 })})
+                </p>
+              </div>
+              <div>
+                <p className="text-zinc-400">Acciones totales actuales</p>
+                <p className="text-white font-semibold">
+                  {holdings.total_shares.toLocaleString()}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex justify-end mt-4">
+              <a
+                href={insider.transactions[0]?.humanUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-zinc-400 hover:text-zinc-200 underline"
+              >
+                Ver detalles en SEC →
+              </a>
+            </div>
+          </div>
+        );
+      })}
+
+      {insiders.length > VISIBLE_COUNT && (
+        <div className="text-center pt-4">
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="text-sm px-4 py-2 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-600"
+          >
+            {expanded ? 'Ver menos' : `Ver ${insiders.length - VISIBLE_COUNT} más`}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
