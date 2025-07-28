@@ -17,11 +17,11 @@ function sortInsidersByValue(insiders: InsiderData[]): InsiderData[] {
   );
 }
 
-
 export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Props) {
   const [insiders, setInsiders] = useState<InsiderData[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [expanded, setExpanded] = useState(false);
+  const [filter, setFilter] = useState<'all' | 'purchases' | 'sales'>('all');
   const VISIBLE_COUNT = 5;
 
   useEffect(() => {
@@ -30,7 +30,12 @@ export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Pro
     setInsiders(sorted);
   }, []);
 
-  const filteredInsiders = useFilteredInsiders(insiders, searchQuery);
+  const filteredInsiders = useFilteredInsiders(insiders, searchQuery).filter((insider) => {
+    if (filter === 'purchases') return insider.total_securities_purchased > 0;
+    if (filter === 'sales') return insider.total_securities_sold > 0;
+    return true;
+  });
+
   const visibleInsiders = expanded ? filteredInsiders : filteredInsiders.slice(0, VISIBLE_COUNT);
 
   return (
@@ -43,8 +48,36 @@ export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Pro
           setSearchQuery(e.target.value);
           setExpanded(false);
         }}
-        className="w-full px-4 py-2 mb-4 rounded-xl bg-zinc-800 text-white placeholder-zinc-500 border border-zinc-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+        className="w-full px-4 py-2 rounded-xl bg-zinc-800 text-white placeholder-zinc-500 border border-zinc-600 focus:outline-none focus:ring-2 focus:ring-green-500"
       />
+
+      <div className="flex gap-2">
+        <button
+          onClick={() => setFilter('all')}
+          className={`px-3 py-1 rounded text-sm border ${
+            filter === 'all' ? 'bg-zinc-700 text-white' : 'bg-zinc-800 text-zinc-400 border-zinc-600'
+          }`}
+        >
+          All
+        </button>
+        <button
+          onClick={() => setFilter('purchases')}
+          className={`px-3 py-1 rounded text-sm border ${
+            filter === 'purchases' ? 'bg-green-700 text-white' : 'bg-zinc-800 text-zinc-400 border-zinc-600'
+          }`}
+        >
+          Buys
+        </button>
+        <button
+          onClick={() => setFilter('sales')}
+          className={`px-3 py-1 rounded text-sm border ${
+            filter === 'sales' ? 'bg-red-700 text-white' : 'bg-zinc-800 text-zinc-400 border-zinc-600'
+          }`}
+        >
+          Sells
+        </button>
+      </div>
+
       <h3>Sorted by total transaction value</h3>
       {visibleInsiders.map((insider) => {
         const {
