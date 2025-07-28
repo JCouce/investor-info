@@ -1,69 +1,139 @@
-# React + TypeScript + Vite
+# 📈 Insider Trading Visualizer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive app to explore insider trading and price activity for public companies using data from **SEC Form 4** and historical market data.
 
-Currently, two official plugins are available:
+Built with **Vite + React + TypeScript + TailwindCSS**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Requirements
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js v18+
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Install dependencies
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Start the dev server
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+The app will be running at `http://localhost:5173`.
+
+---
+
+## 🧱 Tech Stack
+
+- **Vite** – Fast and minimal build system
+- **React 19** – UI library
+- **TypeScript** – Type safety
+- **Tailwind CSS v4** – Utility-first styling (dark theme)
+- **ESLint** – Code linting and quality
+
+---
+
+## 🧠 Business Logic & Metrics
+
+All metrics are computed dynamically from each company’s `eod` (end-of-day) price history.
+
+### 📊 Key Calculations
+
+- **Total Growth (%):**
+  ```ts
+  ((last - first) / first) * 100
+  ```
+
+- **Average Volume:**
+  ```ts
+  average of all eod.volume
+  ```
+
+- **Volatility:**
+  ```ts
+  max(high) - min(low)
+  ```
+
+- **5-Day Trend:**
+  ```ts
+  ((close[-1] - close[-5]) / close[-5]) * 100
+  ```
+
+
+### 🏷️ Penny Stock Badge
+
+Companies are flagged as **Penny Stocks** if:
+```ts
+latest adjusted_close < 5
+```
+A yellow badge appears in both summary and detail views.
+---
+
+## ✅ Features by Component
+
+### 🧱 App Layout
+- Tab-based interface for switching between **Insiders** and **Companies**
+- Responsive layout with independent scrollable panels
+- Shared selection state management for coordinated UI updates
+
+---
+
+### 🏢 CompanyListPanel
+- Displays a scrollable list of all companies with company data
+- Toggleable sorting by:
+  - Name
+  - Growth %
+  - Average volume
+  - 5-day trend %
+  - Volatility score
+
+---
+
+### 📋 CompanyDetailPanel
+- Detailed breakdown of the selected company:
+  - Last closing price and trading volume
+  - Volume average and trend over the last 5 days
+  - Full growth percentage since first available record
+  - Volatility indicator and color-coded score
+- Historical summary table with:
+  - Open, close, and volume for the last 10 sessions
+
+---
+
+### 🔍 CompanySearch
+- Real-time search input to filter companies by name or ticker
+- Case-insensitive matching
+
+---
+
+### 📊 Metrics & Calculations
+- All values (growth, volatility, trend, etc.) are calculated in real time from raw EOD data
+- Growth percentages and trends are color-coded (green/red/white) for quick visual parsing
+- Separate utility functions for volume and volatility highlighting
+- Penny stock classification based on adjusted close price (< $5)
+
+---
+
+### 💄 UI / UX
+- Clean, minimalist dark theme using Tailwind CSS
+- Responsive and scrollable layout for both panels
+- Color-coded indicators for key financial health markers
+
+---
+
+## 🛠 Linting
+
+```bash
+npm run lint
+```
+
+---
+
+## 📄 License
+
+MIT © 2025
