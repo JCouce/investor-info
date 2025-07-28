@@ -46,9 +46,12 @@ export default function InsiderActivityPanel({ selectedInsiderId }: Props) {
     );
   }
 
-  return (
-    <div className="space-y-6">
-      {selected.transactions.map((transaction: Transaction) => (
+ return (
+  <div className="space-y-6">
+    {selected.transactions
+      .slice()
+      .sort((a, b) => new Date(b.filingDate).getTime() - new Date(a.filingDate).getTime())
+      .map((transaction: Transaction) => (
         <InsiderCard
           key={transaction.id}
           insiderName={selected.insider.name}
@@ -59,6 +62,6 @@ export default function InsiderActivityPanel({ selectedInsiderId }: Props) {
           holding={selected.holdings}
         />
       ))}
-    </div>
-  );
+  </div>
+);
 }

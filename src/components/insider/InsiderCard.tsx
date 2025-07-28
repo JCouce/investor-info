@@ -22,10 +22,13 @@ export default function InsiderCard({
 
   return (
     <div className="bg-zinc-900 rounded-2xl shadow p-4 flex flex-col gap-3 border border-zinc-700">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-start">
         <div>
           <p className="text-lg font-semibold text-white">{insiderName}</p>
           <p className="text-sm text-zinc-400 capitalize">{insiderRelationship}</p>
+          <p className="text-xs text-zinc-500 mt-1">
+            {new Date(transaction.filingDate).toLocaleDateString()}
+          </p>
         </div>
         <div className="text-right">
           <p className="text-sm text-white font-medium">{companyName}</p>
