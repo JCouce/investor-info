@@ -1,6 +1,12 @@
 import type { CompanyData } from '../../types/company-data.types';
 import rawData from '../../data.json';
-import { calculateGrowthPercentage, getGrowthColorClass, getVolatilityColorClass, getVolumeColorClass } from '../../helpers/priceUtils';
+import {
+  calculateGrowthPercentage,
+  getGrowthColorClass,
+  getVolatilityColorClass,
+  isPennyStock,
+  getVolumeColorClass
+} from '../../helpers/priceUtils';
 
 interface Props {
   selectedCompanyId: string | null;
@@ -35,12 +41,20 @@ export default function CompanyDetailPanel({ selectedCompanyId }: Props) {
   const validCloses = eod.filter(d => typeof d.close === 'number');
   const highestClose = validCloses.length ? [...validCloses].sort((a, b) => b.close - a.close)[0] : null;
   const lowestClose = validCloses.length ? [...validCloses].sort((a, b) => a.close - b.close)[0] : null;
+  const isPenny = isPennyStock(eod);
+
 
   return (
     <div className="p-4 border border-zinc-700 rounded-xl h-[80vh] overflow-y-auto bg-zinc-900">
       <div className="mb-6">
         <h2 className="text-2xl text-white font-bold">{company.name_display}</h2>
         <p className="text-zinc-400 text-sm">{company.ticker}</p>
+        {isPenny && (
+          <span className="inline-block text-xs bg-yellow-500 text-black font-semibold px-2 py-0.5 rounded">
+            Penny Stock
+          </span>
+        )}
+
       </div>
 
       {/* Sección: Resumen General */}

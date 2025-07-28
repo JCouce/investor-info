@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
 import rawData from '../../data.json';
 import type { CompanyData } from '../../types/company-data.types';
-import { calculateGrowthPercentage, getGrowthColorClass, getVolumeColorClass, getVolatilityColorClass } from '../../helpers/priceUtils';
+import {
+  calculateGrowthPercentage,
+  getGrowthColorClass,
+  getVolumeColorClass,
+  getVolatilityColorClass,
+  isPennyStock
+} from '../../helpers/priceUtils';
 
 interface Props {
   onSelectCompany: (id: string) => void;
@@ -109,6 +115,7 @@ export default function CompanySummaryPanel({ onSelectCompany }: Props) {
 
       {filteredCompanies.map((company) => {
         const growth = calculateGrowthPercentage(company.eod);
+        const isPenny = isPennyStock(company.eod);
         const growthClass = getGrowthColorClass(growth);
         const latest = company.eod.at(-1);
         const trend5d = get5dTrend(company.eod);
@@ -116,10 +123,10 @@ export default function CompanySummaryPanel({ onSelectCompany }: Props) {
         const highlight = sortKey === 'growth'
           ? <span className={`${growthClass} text-sm`}>Growth: {growth !== null ? `${growth.toFixed(2)}%` : 'N/A'}</span>
           : sortKey === 'volume'
-          ? <span className={`${getVolumeColorClass(latest?.volume)} text-sm`}>Volumen: {latest?.volume.toLocaleString() || 'N/A'}</span>
-          : sortKey === 'volatility'
-          ? <span className={`${getVolatilityColorClass(getVolatility(company.eod))} text-sm`}>Volatilidad: {getVolatility(company.eod).toFixed(2)}</span>
-          : <span className={`${trendClass} text-sm`}>5D Trend: {trend5d.toFixed(2)}%</span>;
+            ? <span className={`${getVolumeColorClass(latest?.volume)} text-sm`}>Volumen: {latest?.volume.toLocaleString() || 'N/A'}</span>
+            : sortKey === 'volatility'
+              ? <span className={`${getVolatilityColorClass(getVolatility(company.eod))} text-sm`}>Volatilidad: {getVolatility(company.eod).toFixed(2)}</span>
+              : <span className={`${trendClass} text-sm`}>5D Trend: {trend5d.toFixed(2)}%</span>;
 
         return (
           <div
@@ -129,7 +136,14 @@ export default function CompanySummaryPanel({ onSelectCompany }: Props) {
           >
             <div className="flex justify-between items-start">
               <div>
-                <h3 className="text-lg font-semibold text-white">{company.name_display}</h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-semibold text-white">{company.name_display}</h3>
+                  {isPenny && (
+                    <span className="text-xs bg-yellow-500 text-black font-semibold px-2 py-0.5 rounded">
+                      Penny Stock
+                    </span>
+                  )}
+                </div>
                 <p className="text-sm text-zinc-400">{company.ticker}</p>
               </div>
               <div className="text-right text-sm text-zinc-300">

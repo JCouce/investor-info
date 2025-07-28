@@ -33,3 +33,7 @@ export function getVolatilityColorClass(volatility: number | null | undefined): 
   if (volatility > 10) return 'text-yellow-300';         // moderadamente volátil
   return 'text-zinc-300';                                // poco volátil
 }
+
+export function isPennyStock(eod: DailyEOD[]): boolean {
+  return eod.some(day => day.adjusted_close < 1 && day.volume > 0);
+}
