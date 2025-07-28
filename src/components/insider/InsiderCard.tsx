@@ -45,7 +45,7 @@ export default function InsiderCard({
                 : 'text-zinc-300'
             }
           >
-            {isBuy ? 'Compra' : isSell ? 'Venta' : 'Neutral'}
+            {isBuy ? 'Buy' : isSell ? 'Sell' : 'Neutral'}
           </p>
         </div>
         <div>
