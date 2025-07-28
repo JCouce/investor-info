@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import type { InsiderData } from '../types/insider-data.types';
 import { parseInsiderCompanyData } from '../helpers/parseData';
 import rawData from '../data.json';
-
+import { useFilteredInsiders } from '../hooks/useFilteredInsiders';
 
 type Props = {
   onSelect: (insiderId: string) => void;
@@ -13,6 +13,7 @@ type Props = {
 
 export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Props) {
   const [insiders, setInsiders] = useState<InsiderData[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [expanded, setExpanded] = useState(false);
   const VISIBLE_COUNT = 5;
 
@@ -21,10 +22,22 @@ export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Pro
     setInsiders(insiders);
   }, []);
 
-  const visibleInsiders = expanded ? insiders : insiders.slice(0, VISIBLE_COUNT);
+  const filteredInsiders = useFilteredInsiders(insiders, searchQuery);
+  const visibleInsiders = expanded ? filteredInsiders : filteredInsiders.slice(0, VISIBLE_COUNT);
 
   return (
     <div className="space-y-6">
+      <input
+        type="text"
+        placeholder="Buscar por insider o empresa..."
+        value={searchQuery}
+        onChange={(e) => {
+          setSearchQuery(e.target.value);
+          setExpanded(false);
+        }}
+        className="w-full px-4 py-2 mb-4 rounded-xl bg-zinc-800 text-white placeholder-zinc-500 border border-zinc-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+      />
+
       {visibleInsiders.map((insider) => {
         const {
           insider: insiderInfo,
@@ -102,13 +115,13 @@ export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Pro
         );
       })}
 
-      {insiders.length > VISIBLE_COUNT && (
+      {filteredInsiders.length > VISIBLE_COUNT && (
         <div className="text-center pt-4">
           <button
             onClick={() => setExpanded(!expanded)}
             className="text-sm px-4 py-2 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-600"
           >
-            {expanded ? 'Ver menos' : `Ver ${insiders.length - VISIBLE_COUNT} más`}
+            {expanded ? 'Ver menos' : `Ver ${filteredInsiders.length - VISIBLE_COUNT} más`}
           </button>
         </div>
       )}
