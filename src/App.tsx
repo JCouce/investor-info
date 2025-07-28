@@ -1,8 +1,12 @@
 import './App.css';
 import InsiderActivityPanel from './components/InsiderActivityPanel';
 import InsiderSummaryPanel from './components/InsiderSummaryPanel';
+import { useState } from 'react';
+
 
 export default function App() {
+  const [selectedInsiderId, setSelectedInsiderId] = useState<string | null>(null);
+
   return (
     <main className="bg-black min-h-screen text-white">
       <header className="p-6 border-b border-zinc-800">
@@ -16,12 +20,12 @@ export default function App() {
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="w-full lg:w-1/2">
             <h2 className="text-xl font-semibold text-white mb-4">Resumen por Insider</h2>
-            <InsiderSummaryPanel />
+            <InsiderSummaryPanel onSelect={setSelectedInsiderId} selectedInsiderId={selectedInsiderId} />
           </div>
 
           <div className="w-full lg:w-1/2">
             <h2 className="text-xl font-semibold text-white mb-4">Detalle de Transacciones</h2>
-            <InsiderActivityPanel />
+            <InsiderActivityPanel selectedInsiderId={selectedInsiderId} />
           </div>
         </div>
       </section>

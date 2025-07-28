@@ -5,7 +5,13 @@ import type { InsiderData } from '../types/insider-data.types';
 import { parseInsiderCompanyData } from '../helpers/parseData';
 import rawData from '../data.json';
 
-export default function InsiderSummaryPanel() {
+
+type Props = {
+  onSelect: (insiderId: string) => void;
+  selectedInsiderId: string | null;
+};
+
+export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Props) {
   const [insiders, setInsiders] = useState<InsiderData[]>([]);
   const [expanded, setExpanded] = useState(false);
   const VISIBLE_COUNT = 5;
@@ -34,11 +40,15 @@ export default function InsiderSummaryPanel() {
 
         const isBuyer = net_securities > 0;
         const isSeller = net_securities < 0;
+        const isSelected = selectedInsiderId === insiderInfo.id;
 
         return (
           <div
             key={insiderInfo.id}
-            className="bg-zinc-900 border border-zinc-700 rounded-2xl p-4 shadow"
+            onClick={() => onSelect(insiderInfo.id)}
+            className={`bg-zinc-900 border rounded-2xl p-4 shadow cursor-pointer transition 
+              ${isSelected ? 'border-green-400 bg-zinc-800' : 'border-zinc-700 hover:border-zinc-600'}
+            `}
           >
             <div className="flex justify-between items-start">
               <div>
