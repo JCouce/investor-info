@@ -67,7 +67,7 @@ export default function CompanyDetailPanel({ selectedCompanyId }: Props) {
           </>
         )}
         <p><strong>Total growth:</strong> <span className={growthClass}>{growth?.toFixed(2)}%</span></p>
-        <p><strong>Total volatility:</strong> <span className={volatilityClass}>{volatility.toFixed(2)}</span></p>
+        <p><strong>Total volatility:</strong> <span className={volatilityClass}>{`${volatility.toFixed(2)}$`}</span></p>
         {trend5d !== null && (
           <p><strong>5D trend:</strong> <span className={trendClass}>{trend5d.toFixed(2)}%</span></p>
         )}
@@ -79,6 +79,7 @@ export default function CompanyDetailPanel({ selectedCompanyId }: Props) {
         <div className="text-sm text-zinc-300 space-y-1">
           <p><strong>Up days:</strong> {bullishDays}</p>
           <p><strong>Down days:</strong> {bearishDays}</p>
+          <p><strong>Total days:</strong> {eod.length}</p>
           {highestClose && (
             <p><strong>Highest close:</strong> ${highestClose.close.toFixed(2)} ({highestClose.date})</p>
           )}
