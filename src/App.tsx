@@ -2,35 +2,54 @@ import './App.css';
 import { useState } from 'react';
 import InsiderActivityPanel from './components/InsiderActivityPanel';
 import InsiderSummaryPanel from './components/InsiderSummaryPanel';
+import TabSelector from './components/TabSelector';
+import CompanyDetailPanel from './components/CompanyDetailPanel';
+import CompanySummaryPanel from './components/CompanySummaryPanel';
 
 export default function App() {
+  const [activeTab, setActiveTab] = useState<'insiders' | 'companies'>('insiders');
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
   const [selectedInsiderId, setSelectedInsiderId] = useState<string | null>(null);
 
   return (
     <main className="bg-black min-h-screen text-white">
       <header className="p-6 border-b border-zinc-800">
-        <h1 className="text-2xl font-bold text-white">Actividad de Insiders</h1>
+        <h1 className="text-2xl font-bold text-white">Actividad Financiera</h1>
         <p className="text-sm text-zinc-400">
-          Transacciones relevantes de ejecutivos en empresas públicas
+          Monitoreo de transacciones de insiders y evolución de compañías públicas.
         </p>
       </header>
 
-      <section className="p-6 md:grid md:grid-cols-2 md:gap-6 space-y-12 md:space-y-0">
-        {/* Panel izquierdo: Resumen */}
-        <div className="bg-zinc-950 rounded-xl p-4 md:p-6 overflow-y-auto max-h-[calc(100vh-160px)]">
-          <h2 className="text-xl font-semibold text-white mb-4">Resumen por Insider</h2>
-          <InsiderSummaryPanel
-            onSelect={setSelectedInsiderId}
-            selectedInsiderId={selectedInsiderId}
-          />
-        </div>
+      <TabSelector activeTab={activeTab} onTabChange={setActiveTab} />
 
-        {/* Panel derecho: Detalle de transacciones */}
-        <div className="bg-zinc-950 rounded-xl p-4 md:p-6 overflow-y-auto max-h-[calc(100vh-160px)]">
-          <h2 className="text-xl font-semibold text-white mb-4">Detalle de Transacciones</h2>
-          <InsiderActivityPanel selectedInsiderId={selectedInsiderId} />
-        </div>
-      </section>
+      {activeTab === 'insiders' && (
+        <section className="p-6 flex flex-col md:flex-row md:space-x-8 space-y-8 md:space-y-0">
+          <div className="md:w-1/2 h-[calc(100vh-200px)] overflow-y-auto pr-2">
+            <h2 className="text-xl font-semibold text-white mb-4">Resumen por Insider</h2>
+            <InsiderSummaryPanel
+              onSelect={setSelectedInsiderId}
+              selectedInsiderId={selectedInsiderId}
+            />
+          </div>
+          <div className="md:w-1/2 h-[calc(100vh-200px)] overflow-y-auto pr-2">
+            <h2 className="text-xl font-semibold text-white mb-4">Detalle de Transacciones</h2>
+            <InsiderActivityPanel selectedInsiderId={selectedInsiderId} />
+          </div>
+        </section>
+      )}
+
+      {activeTab === 'companies' && (
+        <section className="p-6 flex flex-col md:flex-row md:space-x-8 space-y-8 md:space-y-0">
+          <div className="md:w-1/2 h-[calc(100vh-200px)] overflow-y-auto pr-2">
+            <h2 className="text-xl font-semibold text-white mb-4">Lista de Compañías</h2>
+            <CompanySummaryPanel onSelectCompany={setSelectedCompany} />
+          </div>
+          <div className="md:w-1/2 h-[calc(100vh-200px)] overflow-y-auto pr-2">
+            <h2 className="text-xl font-semibold text-white mb-4">Detalle de Compañía</h2>
+            <CompanyDetailPanel selectedCompanyId={selectedCompany} />
+          </div>
+        </section>
+      )}
     </main>
   );
 }
