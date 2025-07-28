@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { InsiderData } from '../types/insider-data.types';
-import { parseInsiderCompanyData } from '../helpers/parseData';
-import rawData from '../data.json';
-import { useFilteredInsiders } from '../hooks/useFilteredInsiders';
+import type { InsiderData } from '../../types/insider-data.types';
+import { parseInsiderCompanyData } from '../../helpers/parseData';
+import rawData from '../../data.json';
+import { useFilteredInsiders } from '../../hooks/useFilteredInsiders';
 
 type Props = {
   onSelect: (insiderId: string) => void;

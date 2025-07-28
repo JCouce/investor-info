@@ -1,10 +1,10 @@
 import './App.css';
 import { useState } from 'react';
-import InsiderActivityPanel from './components/InsiderActivityPanel';
-import InsiderSummaryPanel from './components/InsiderSummaryPanel';
-import TabSelector from './components/TabSelector';
-import CompanyDetailPanel from './components/CompanyDetailPanel';
-import CompanySummaryPanel from './components/CompanySummaryPanel';
+import InsiderActivityPanel from './components/insider/InsiderActivityPanel';
+import InsiderSummaryPanel from './components/layout/InsiderSummaryPanel';
+import TabSelector from './components/layout/TabSelector';
+import CompanyDetailPanel from './components/company/CompanyDetailPanel';
+import CompanySummaryPanel from './components/company/CompanySummaryPanel';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'insiders' | 'companies'>('insiders');

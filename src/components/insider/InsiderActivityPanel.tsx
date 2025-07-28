@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { InsiderData, Transaction } from '../types/insider-data.types';
-import { parseInsiderCompanyData } from '../helpers/parseData';
+import type { InsiderData, Transaction } from '../../types/insider-data.types';
+import { parseInsiderCompanyData } from '../../helpers/parseData';
 import InsiderCard from './InsiderCard';
-import rawData from '../data.json';
+import rawData from '../../data.json';
 
 
 

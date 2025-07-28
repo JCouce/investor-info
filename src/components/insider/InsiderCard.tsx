@@ -1,4 +1,4 @@
-import type { Transaction, InsiderData } from '../types/insider-data.types';
+import type { Transaction, InsiderData } from '../../types/insider-data.types';
 
 type Props = {
   insiderName: string;

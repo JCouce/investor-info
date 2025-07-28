@@ -1,6 +1,6 @@
-import type { CompanyData } from '../types/company-data.types';
-import rawData from '../data.json';
-import { calculateGrowthPercentage, getGrowthColorClass, getVolatilityColorClass, getVolumeColorClass } from '../helpers/priceUtils';
+import type { CompanyData } from '../../types/company-data.types';
+import rawData from '../../data.json';
+import { calculateGrowthPercentage, getGrowthColorClass, getVolatilityColorClass, getVolumeColorClass } from '../../helpers/priceUtils';
 
 interface Props {
   selectedCompanyId: string | null;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import rawData from '../data.json';
-import type { CompanyData } from '../types/company-data.types';
-import { calculateGrowthPercentage, getGrowthColorClass, getVolumeColorClass, getVolatilityColorClass } from '../helpers/priceUtils';
+import rawData from '../../data.json';
+import type { CompanyData } from '../../types/company-data.types';
+import { calculateGrowthPercentage, getGrowthColorClass, getVolumeColorClass, getVolatilityColorClass } from '../../helpers/priceUtils';
 
 interface Props {
   onSelectCompany: (id: string) => void;
