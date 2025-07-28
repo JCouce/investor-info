@@ -1,7 +1,7 @@
 import './App.css';
+import { useState } from 'react';
 import InsiderActivityPanel from './components/InsiderActivityPanel';
 import InsiderSummaryPanel from './components/InsiderSummaryPanel';
-import { useState } from 'react';
 
 export default function App() {
   const [selectedInsiderId, setSelectedInsiderId] = useState<string | null>(null);
@@ -15,24 +15,20 @@ export default function App() {
         </p>
       </header>
 
-      <section className="h-[calc(100vh-96px)] p-6"> {/* 96px = altura header */}
-        <div className="flex flex-col lg:flex-row gap-8 h-full">
-          <div className="w-full lg:w-1/2 h-full overflow-y-auto">
-            <h2 className="text-xl font-semibold text-white mb-4 sticky top-0 bg-black z-10 py-2">
-              Resumen por Insider
-            </h2>
-            <InsiderSummaryPanel
-              onSelect={setSelectedInsiderId}
-              selectedInsiderId={selectedInsiderId}
-            />
-          </div>
+      <section className="p-6 md:grid md:grid-cols-2 md:gap-6 space-y-12 md:space-y-0">
+        {/* Panel izquierdo: Resumen */}
+        <div className="bg-zinc-950 rounded-xl p-4 md:p-6 overflow-y-auto max-h-[calc(100vh-160px)]">
+          <h2 className="text-xl font-semibold text-white mb-4">Resumen por Insider</h2>
+          <InsiderSummaryPanel
+            onSelect={setSelectedInsiderId}
+            selectedInsiderId={selectedInsiderId}
+          />
+        </div>
 
-          <div className="w-full lg:w-1/2 h-full overflow-y-auto">
-            <h2 className="text-xl font-semibold text-white mb-4 sticky top-0 bg-black z-10 py-2">
-              Detalle de Transacciones
-            </h2>
-            <InsiderActivityPanel selectedInsiderId={selectedInsiderId} />
-          </div>
+        {/* Panel derecho: Detalle de transacciones */}
+        <div className="bg-zinc-950 rounded-xl p-4 md:p-6 overflow-y-auto max-h-[calc(100vh-160px)]">
+          <h2 className="text-xl font-semibold text-white mb-4">Detalle de Transacciones</h2>
+          <InsiderActivityPanel selectedInsiderId={selectedInsiderId} />
         </div>
       </section>
     </main>
