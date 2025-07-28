@@ -14,9 +14,9 @@ export default function App() {
   return (
     <main className="bg-black min-h-screen text-white">
       <header className="p-6 border-b border-zinc-800">
-        <h1 className="text-2xl font-bold text-white">Actividad Financiera</h1>
+        <h1 className="text-2xl font-bold text-white">Financial Monitoring</h1>
         <p className="text-sm text-zinc-400">
-          Monitoreo de transacciones de insiders y evolución de compañías públicas.
+          Monitoring insider transactions and the evolution of public companies.
         </p>
       </header>
 
@@ -25,14 +25,14 @@ export default function App() {
       {activeTab === 'insiders' && (
         <section className="p-6 flex flex-col md:flex-row md:space-x-8 space-y-8 md:space-y-0">
           <div className="md:w-1/2 h-[calc(100vh-200px)] overflow-y-auto pr-2">
-            <h2 className="text-xl font-semibold text-white mb-4">Resumen por Insider</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">Insider Summary</h2>            
             <InsiderSummaryPanel
               onSelect={setSelectedInsiderId}
               selectedInsiderId={selectedInsiderId}
             />
           </div>
           <div className="md:w-1/2 h-[calc(100vh-200px)] overflow-y-auto pr-2">
-            <h2 className="text-xl font-semibold text-white mb-4">Detalle de Transacciones</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">Transaction Details</h2>
             <InsiderActivityPanel selectedInsiderId={selectedInsiderId} />
           </div>
         </section>
@@ -41,11 +41,11 @@ export default function App() {
       {activeTab === 'companies' && (
         <section className="p-6 flex flex-col md:flex-row md:space-x-8 space-y-8 md:space-y-0">
           <div className="md:w-1/2 h-[calc(100vh-200px)] overflow-y-auto pr-2">
-            <h2 className="text-xl font-semibold text-white mb-4">Lista de Compañías</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">Company List</h2>
             <CompanySummaryPanel onSelectCompany={setSelectedCompany} />
           </div>
           <div className="md:w-1/2 h-[calc(100vh-200px)] overflow-y-auto pr-2">
-            <h2 className="text-xl font-semibold text-white mb-4">Detalle de Compañía</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">Company Details</h2>
             <CompanyDetailPanel selectedCompanyId={selectedCompany} />
           </div>
         </section>

@@ -45,7 +45,7 @@ export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Pro
         }}
         className="w-full px-4 py-2 mb-4 rounded-xl bg-zinc-800 text-white placeholder-zinc-500 border border-zinc-600 focus:outline-none focus:ring-2 focus:ring-green-500"
       />
-
+      <h3>Sorted by total transaction value</h3>
       {visibleInsiders.map((insider) => {
         const {
           insider: insiderInfo,
