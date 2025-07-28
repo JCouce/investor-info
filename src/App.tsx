@@ -1,7 +1,7 @@
 import './App.css';
 import { useState } from 'react';
 import InsiderActivityPanel from './components/insider/InsiderActivityPanel';
-import InsiderSummaryPanel from './components/layout/InsiderSummaryPanel';
+import InsiderSummaryPanel from './components/insider/InsiderSummaryPanel';
 import TabSelector from './components/layout/TabSelector';
 import CompanyDetailPanel from './components/company/CompanyDetailPanel';
 import CompanySummaryPanel from './components/company/CompanySummaryPanel';
