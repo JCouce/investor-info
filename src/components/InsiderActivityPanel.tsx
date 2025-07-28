@@ -6,11 +6,13 @@ import { parseInsiderCompanyData } from '../helpers/parseData';
 import InsiderCard from './InsiderCard';
 import rawData from '../data.json'; // ✅ importa el JSON directamente
 
+
 export default function InsiderActivityPanel() {
   const [insiders, setInsiders] = useState<InsiderData[] | null>(null);
+  const [expanded, setExpanded] = useState(false);
+  const VISIBLE_COUNT = 5;
 
   useEffect(() => {
-    // ✅ los datos ya están cargados al importar
     const { insiders } = parseInsiderCompanyData(rawData);
     setInsiders(insiders);
   }, []);
@@ -31,9 +33,11 @@ export default function InsiderActivityPanel() {
     );
   }
 
+  const visibleInsiders = expanded ? insiders : insiders.slice(0, VISIBLE_COUNT);
+
   return (
-    <div className="bg-black min-h-screen p-6 space-y-6">
-      {insiders.map((insider) =>
+    <div className="space-y-6">
+      {visibleInsiders.map((insider) =>
         insider.transactions.map((transaction: Transaction) => (
           <InsiderCard
             key={transaction.id}
@@ -45,6 +49,17 @@ export default function InsiderActivityPanel() {
             holding={insider.holdings}
           />
         ))
+      )}
+
+      {insiders.length > VISIBLE_COUNT && (
+        <div className="text-center pt-4">
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="text-sm px-4 py-2 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-600"
+          >
+            {expanded ? 'Ver menos' : `Ver ${insiders.length - VISIBLE_COUNT} más`}
+          </button>
+        </div>
       )}
     </div>
   );
