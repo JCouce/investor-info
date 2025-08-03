@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import type { InsiderData, Transaction } from '../../types/insider-data.types';
-import { parseInsiderCompanyData } from '../../helpers/parseData';
+import { useMemo } from 'react';
+import type { Transaction } from '../../types/insider-data.types';
 import InsiderCard from './InsiderCard';
-import rawData from '../../data.json';
+import { useData } from '../../context/DataContext';
 
 
 
@@ -13,20 +12,12 @@ type Props = {
 };
 
 export default function InsiderActivityPanel({ selectedInsiderId }: Props) {
-  const [insiders, setInsiders] = useState<InsiderData[] | null>(null);
+  const { insiders } = useData();
 
-  useEffect(() => {
-    const { insiders } = parseInsiderCompanyData(rawData);
-    setInsiders(insiders);
-  }, []);
-
-  if (!insiders) {
-    return (
-      <div className="text-white p-6 text-center">
-        Loading insider data...
-      </div>
-    );
-  }
+  // Memoizamos la búsqueda del insider seleccionado
+  const selected = useMemo(() => {
+    return selectedInsiderId ? insiders.find((i) => i.insider.id === selectedInsiderId) : null;
+  }, [insiders, selectedInsiderId]);
 
   if (!selectedInsiderId) {
     return (
@@ -35,8 +26,6 @@ export default function InsiderActivityPanel({ selectedInsiderId }: Props) {
       </div>
     );
   }
-
-  const selected = insiders.find((i) => i.insider.id === selectedInsiderId);
 
   if (!selected || selected.transactions.length === 0) {
     return (

@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import rawData from '../../data.json';
+import { useState, useMemo, memo } from 'react';
 import type { CompanyData } from '../../types/company-data.types';
 import {
   calculateGrowthPercentage,
@@ -8,6 +7,7 @@ import {
   getVolatilityColorClass,
   isPennyStock
 } from '../../helpers/priceUtils';
+import { useData } from '../../context/DataContext';
 
 interface Props {
   onSelectCompany: (id: string) => void;
@@ -16,15 +16,11 @@ interface Props {
 type SortKey = 'growth' | 'volume' | 'volatility' | 'trend5d';
 type SortOrder = 'asc' | 'desc';
 
-export default function CompanySummaryPanel({ onSelectCompany }: Props) {
-  const [companies, setCompanies] = useState<CompanyData[]>([]);
+function CompanySummaryPanel({ onSelectCompany }: Props) {
+  const { companies } = useData();
   const [searchQuery, setSearchQuery] = useState('');
   const [sortKey, setSortKey] = useState<SortKey>('growth');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
-
-  useEffect(() => {
-    setCompanies(rawData.companies);
-  }, []);
 
   const handleSortChange = (key: SortKey) => {
     if (key === sortKey) {
@@ -48,33 +44,36 @@ export default function CompanySummaryPanel({ onSelectCompany }: Props) {
     return ((last - prev) / prev) * 100;
   };
 
-  const filteredCompanies = companies
-    .filter((company) => {
-      const query = searchQuery.toLowerCase();
-      return (
-        company.name.toLowerCase().includes(query) ||
-        company.name_display.toLowerCase().includes(query) ||
-        company.ticker.toLowerCase().includes(query)
-      );
-    })
-    .sort((a, b) => {
-      let valA = 0;
-      let valB = 0;
-      if (sortKey === 'growth') {
-        valA = calculateGrowthPercentage(a.eod) || 0;
-        valB = calculateGrowthPercentage(b.eod) || 0;
-      } else if (sortKey === 'volume') {
-        valA = a.eod.at(-1)?.volume || 0;
-        valB = b.eod.at(-1)?.volume || 0;
-      } else if (sortKey === 'volatility') {
-        valA = getVolatility(a.eod);
-        valB = getVolatility(b.eod);
-      } else if (sortKey === 'trend5d') {
-        valA = get5dTrend(a.eod);
-        valB = get5dTrend(b.eod);
-      }
-      return sortOrder === 'asc' ? valA - valB : valB - valA;
-    });
+  // Memoizamos el filtrado y ordenamiento para evitar recálculos innecesarios
+  const filteredCompanies = useMemo(() => {
+    return companies
+      .filter((company) => {
+        const query = searchQuery.toLowerCase();
+        return (
+          company.name.toLowerCase().includes(query) ||
+          company.name_display.toLowerCase().includes(query) ||
+          company.ticker.toLowerCase().includes(query)
+        );
+      })
+      .sort((a, b) => {
+        let valA = 0;
+        let valB = 0;
+        if (sortKey === 'growth') {
+          valA = calculateGrowthPercentage(a.eod) || 0;
+          valB = calculateGrowthPercentage(b.eod) || 0;
+        } else if (sortKey === 'volume') {
+          valA = a.eod.at(-1)?.volume || 0;
+          valB = b.eod.at(-1)?.volume || 0;
+        } else if (sortKey === 'volatility') {
+          valA = getVolatility(a.eod);
+          valB = getVolatility(b.eod);
+        } else if (sortKey === 'trend5d') {
+          valA = get5dTrend(a.eod);
+          valB = get5dTrend(b.eod);
+        }
+        return sortOrder === 'asc' ? valA - valB : valB - valA;
+      });
+  }, [companies, searchQuery, sortKey, sortOrder]);
 
   return (
     <div className="space-y-4">
@@ -158,3 +157,5 @@ export default function CompanySummaryPanel({ onSelectCompany }: Props) {
     </div>
   );
 }
+
+export default memo(CompanySummaryPanel);

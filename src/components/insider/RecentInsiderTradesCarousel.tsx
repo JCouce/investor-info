@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import rawData from '../../data.json';
-import { parseInsiderCompanyData } from '../../helpers/parseData';
+import { useMemo } from 'react';
 import type { InsiderData, LastTransaction } from '../../types/insider-data.types';
+import { useData } from '../../context/DataContext';
 
 type TransactionWithMeta = LastTransaction & {
   insiderName: string;
@@ -13,11 +12,10 @@ type TransactionWithMeta = LastTransaction & {
 };
 
 export default function RecentInsiderTradesCarousel() {
-  const [transactions, setTransactions] = useState<TransactionWithMeta[]>([]);
+  const { insiders } = useData();
 
-  useEffect(() => {
-    const { insiders } = parseInsiderCompanyData(rawData);
-
+  // Memoizamos el procesamiento de transacciones para evitar recálculos
+  const transactions = useMemo(() => {
     const allTransactions: TransactionWithMeta[] = insiders.flatMap((entry: InsiderData) =>
       entry.holdings.last_transactions.map((tx) => ({
         ...tx,
@@ -30,8 +28,8 @@ export default function RecentInsiderTradesCarousel() {
 
     allTransactions.sort((a, b) => new Date(b.transaction_date).getTime() - new Date(a.transaction_date).getTime());
 
-    setTransactions(allTransactions.slice(0, 50)); // top 50
-  }, []);
+    return allTransactions.slice(0, 50); // top 50
+  }, [insiders]);
 
   return (
     <div className="w-full border-b border-zinc-800 bg-zinc-900 py-2 overflow-hidden relative">

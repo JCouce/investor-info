@@ -1,5 +1,4 @@
 import type { CompanyData } from '../../types/company-data.types';
-import rawData from '../../data.json';
 import {
   calculateGrowthPercentage,
   getGrowthColorClass,
@@ -7,13 +6,14 @@ import {
   isPennyStock,
   getVolumeColorClass
 } from '../../helpers/priceUtils';
+import { useData } from '../../context/DataContext';
 
 interface Props {
   selectedCompanyId: string | null;
 }
 
 export default function CompanyDetailPanel({ selectedCompanyId }: Props) {
-  const { companies } = rawData;
+  const { companies } = useData();
   const company: CompanyData | undefined = companies.find((c) => c.id === selectedCompanyId);
 
   if (!selectedCompanyId || !company || !company.eod || company.eod.length === 0) {

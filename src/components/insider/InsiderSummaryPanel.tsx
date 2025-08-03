@@ -1,10 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useMemo, memo } from 'react';
 import type { InsiderData } from '../../types/insider-data.types';
-import { parseInsiderCompanyData } from '../../helpers/parseData';
-import rawData from '../../data.json';
 import { useFilteredInsiders } from '../../hooks/useFilteredInsiders';
+import { useData } from '../../context/DataContext';
 
 type Props = {
   onSelect: (insiderId: string) => void;
@@ -17,20 +16,19 @@ function sortInsidersByValue(insiders: InsiderData[]): InsiderData[] {
   );
 }
 
-export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Props) {
-  const [insiders, setInsiders] = useState<InsiderData[]>([]);
+function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Props) {
+  const { insiders: rawInsiders } = useData();
   const [searchQuery, setSearchQuery] = useState('');
   const [expanded, setExpanded] = useState(false);
   const [filter, setFilter] = useState<'all' | 'purchases' | 'sales'>('all');
   const VISIBLE_COUNT = 5;
 
-  useEffect(() => {
-    const { insiders } = parseInsiderCompanyData(rawData);
-    const sorted = sortInsidersByValue(insiders);
-    setInsiders(sorted);
-  }, []);
+  // Memoizamos el sorting para evitar recálculos innecesarios
+  const sortedInsiders = useMemo(() => {
+    return sortInsidersByValue(rawInsiders);
+  }, [rawInsiders]);
 
-  const filteredInsiders = useFilteredInsiders(insiders, searchQuery).filter((insider) => {
+  const filteredInsiders = useFilteredInsiders(sortedInsiders, searchQuery).filter((insider) => {
     if (filter === 'purchases') return insider.total_securities_purchased > 0;
     if (filter === 'sales') return insider.total_securities_sold > 0;
     return true;
@@ -169,3 +167,5 @@ export default function InsiderSummaryPanel({ onSelect, selectedInsiderId }: Pro
     </div>
   );
 }
+
+export default memo(InsiderSummaryPanel);

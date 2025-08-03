@@ -6,6 +6,7 @@ import TabSelector from './components/layout/TabSelector';
 import CompanyDetailPanel from './components/company/CompanyDetailPanel';
 import CompanySummaryPanel from './components/company/CompanySummaryPanel';
 import RecentInsiderTradesCarousel from './components/insider/RecentInsiderTradesCarousel';
+import { DataProvider } from './context/DataContext';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'insiders' | 'companies'>('insiders');
@@ -13,7 +14,8 @@ export default function App() {
   const [selectedInsiderId, setSelectedInsiderId] = useState<string | null>(null);
 
   return (
-    <main className="bg-black text-white flex flex-col h-screen">
+    <DataProvider>
+      <main className="bg-black text-white flex flex-col h-screen">
       <header className="p-6 border-b border-zinc-800 shrink-0">
         <h1 className="text-2xl font-bold text-white">Financial Monitoring</h1>
         <p className="text-sm text-zinc-400">
@@ -59,6 +61,7 @@ export default function App() {
           </>
         )}
       </section>
-    </main>
+      </main>
+    </DataProvider>
   );
 }
